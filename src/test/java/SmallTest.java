@@ -1,6 +1,5 @@
 import com.google.gson.Gson;
 import dtos.NonProfitDTO;
-import dtos.TestDTO;
 import utils.HttpUtils;
 
 import java.io.IOException;
