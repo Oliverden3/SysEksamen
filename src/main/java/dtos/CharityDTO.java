@@ -6,12 +6,14 @@ public class CharityDTO {
     String name;
     String description;
     String location;
+    String profileUrl;
     List<String> tags;
 
-    public CharityDTO(String name, String description, String location, List<String> tags) {
+    public CharityDTO(String name, String description, String location,String profileUrl, List<String> tags) {
         this.name = name;
         this.description = description;
         this.location = location;
+        this.profileUrl = profileUrl;
         this.tags = tags;
     }
 
