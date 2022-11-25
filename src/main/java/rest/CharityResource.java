@@ -34,7 +34,6 @@ public class CharityResource {
         String nonprofit = HttpUtils.fetchData("https://partners.every.org/v0.2/search/"+category+"?apiKey=2b719ff3063ef1714c32edbfdd7af870");
         NonProfitDTO nonProfitDTO = gson.fromJson(nonprofit,NonProfitDTO.class);
         return gson.toJson(nonProfitDTO);
-
     }
 
 
