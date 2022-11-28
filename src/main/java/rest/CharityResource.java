@@ -31,11 +31,14 @@ public class CharityResource {
     @Path("{category}")
     public String getAllFromCategory(@PathParam("category") String category) throws IOException {
         Gson gson = new Gson();
-        String nonprofit = HttpUtils.fetchData("https://partners.every.org/v0.2/search/"+category+"?apiKey=2b719ff3063ef1714c32edbfdd7af870");
+        String nonprofit = HttpUtils.fetchData("https://partners.every.org/v0.2/search/"+category+"?apiKey=2b719ff3063ef1714c32edbfdd7af870&take=50");
         NonProfitDTO nonProfitDTO = gson.fromJson(nonprofit,NonProfitDTO.class);
         return gson.toJson(nonProfitDTO);
+
     }
-
-
+    /*@GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{category}+{}")
+    {}*/
 
 }
