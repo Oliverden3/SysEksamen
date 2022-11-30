@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.FavoritesDTO;
 import dtos.UserDTO;
 import entities.Favorites;
 import entities.Role;
@@ -150,8 +151,7 @@ public class UserFacade {
             em.close();
         }
     }
-    public UserDTO addFavorite(User user, String slug){
-        Favorites favorites = new Favorites(user.getId(), slug);
+    public FavoritesDTO addFavorite(Favorites favorites) throws API_Exception {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
@@ -160,7 +160,7 @@ public class UserFacade {
         } finally {
             em.close();
         }
-        UserDTO theFan = new UserDTO(user);
+        FavoritesDTO theFan = new FavoritesDTO(favorites);
         return theFan;
     }
 

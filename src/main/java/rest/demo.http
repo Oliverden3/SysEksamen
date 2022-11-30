@@ -26,7 +26,11 @@ Content-Type: application/json
 DELETE http://localhost:8080/api/info/user/34
 Accept: application/json
 
+### Create a favorite with users id
+POST http://localhost:8080/BackEnd_CA2_war_exploded/api/user/favorite
+Content-Type: application/json
 
+{"userid": 1, "slug": "utahpetadoptions"}
 
 
 

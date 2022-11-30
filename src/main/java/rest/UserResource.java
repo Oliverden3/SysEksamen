@@ -2,7 +2,9 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.FavoritesDTO;
 import dtos.UserDTO;
+import entities.Favorites;
 import entities.Role;
 import entities.User;
 import errorhandling.API_Exception;
@@ -62,11 +64,11 @@ public class UserResource {
         return Response.ok().entity(GSON.toJson(deleted)).build();
     }
     @POST
-    @Path("/favorite+{id}")
+    @Path("/favorite")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response favorite(@PathParam("id") int id, String charitySlug) throws API_Exception {
-        UserDTO userDTO = FACADE.getUserById(id);
-        UserDTO theFan = FACADE.addFavorite(userDTO.toUser(),charitySlug);
-    return Response.ok().entity(GSON.toJson(theFan)).build();
+    public Response favorite(String favoriteInfo) throws API_Exception {
+        Favorites favorites = GSON.fromJson(favoriteInfo,Favorites.class);
+        FavoritesDTO theFan = FACADE.addFavorite(favorites);
+        return Response.ok().entity(GSON.toJson(theFan)).build();
     }
 }
