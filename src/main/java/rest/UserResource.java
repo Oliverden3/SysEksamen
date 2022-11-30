@@ -61,4 +61,12 @@ public class UserResource {
         UserDTO deleted = FACADE.deleteUser(id);
         return Response.ok().entity(GSON.toJson(deleted)).build();
     }
+    @POST
+    @Path("/favorite+{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response favorite(@PathParam("id") int id, String charitySlug) throws API_Exception {
+        UserDTO userDTO = FACADE.getUserById(id);
+        UserDTO theFan = FACADE.addFavorite(userDTO.toUser(),charitySlug);
+    return Response.ok().entity(GSON.toJson(theFan)).build();
+    }
 }

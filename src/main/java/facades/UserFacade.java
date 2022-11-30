@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.UserDTO;
+import entities.Favorites;
 import entities.Role;
 import entities.User;
 
@@ -148,6 +149,19 @@ public class UserFacade {
         } finally {
             em.close();
         }
+    }
+    public UserDTO addFavorite(User user, String slug){
+        Favorites favorites = new Favorites(user.getId(), slug);
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(favorites);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        UserDTO theFan = new UserDTO(user);
+        return theFan;
     }
 
 
