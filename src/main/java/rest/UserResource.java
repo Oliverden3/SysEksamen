@@ -16,6 +16,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
+
 @Path("user")
 public class UserResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
@@ -70,5 +72,13 @@ public class UserResource {
         Favorites favorites = GSON.fromJson(favoriteInfo,Favorites.class);
         FavoritesDTO theFan = FACADE.addFavorite(favorites);
         return Response.ok().entity(GSON.toJson(theFan)).build();
+    }
+
+    @GET
+    @Path("/{id}+favorite")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getAllFavorites(@PathParam("id")int id) throws API_Exception {
+        List<FavoritesDTO> favoritesList = FACADE.getAllFavoritesFromID(id);
+        return  Response.ok().entity(GSON.toJson(favoritesList)).build();
     }
 }

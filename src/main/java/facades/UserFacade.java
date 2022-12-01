@@ -163,6 +163,16 @@ public class UserFacade {
         FavoritesDTO theFan = new FavoritesDTO(favorites);
         return theFan;
     }
-
+    public List<FavoritesDTO> getAllFavoritesFromID(int id){
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Favorites> query = em.createQuery("SELECT f FROM Favorites f WHERE f.userid = ?1", Favorites.class)
+                    .setParameter(1,id);
+            List<Favorites> favoritesList = query.getResultList();
+            return FavoritesDTO.getFavoriteDTOs(favoritesList);
+        } finally {
+            em.close();
+        }
+    }
 
 }

@@ -1,6 +1,10 @@
 package dtos;
 
 import entities.Favorites;
+import entities.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FavoritesDTO {
     int id;
@@ -15,6 +19,13 @@ public class FavoritesDTO {
         return new Favorites(this.userid,this.slug);
     }
 
+    public static List<FavoritesDTO> getFavoriteDTOs(List<Favorites> favorites) {
+        List<FavoritesDTO> favoritesDTOList = new ArrayList<>();
+        favorites.forEach(favorite -> {
+            favoritesDTOList.add(new FavoritesDTO(favorite));
+        });
+        return favoritesDTOList;
+    }
     public int getId() {
         return id;
     }

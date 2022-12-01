@@ -56,6 +56,4 @@ public class CharityResource {
       return GSON.toJson(sendThis);
     }
 
-
-
 }
