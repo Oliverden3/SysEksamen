@@ -42,7 +42,6 @@ public class CharityResource {
         NonProfitDTO nonProfitDTO = GSON.fromJson(nonprofit, NonProfitDTO.class);
         NonProfitDTO sendThis = FACADE.removeBlacklistedItems(nonProfitDTO);
         return GSON.toJson(sendThis);
-
     }
 
   @GET
@@ -56,7 +55,5 @@ public class CharityResource {
         NonProfitDTO sendThis = FACADE.removeBlacklistedItems(nonProfitDTO);
       return GSON.toJson(sendThis);
     }
-
-
 
 }

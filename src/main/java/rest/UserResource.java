@@ -2,7 +2,9 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.FavoritesDTO;
 import dtos.UserDTO;
+import entities.Favorites;
 import entities.Role;
 import entities.User;
 import errorhandling.API_Exception;
@@ -14,6 +16,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
+
 @Path("user")
 public class UserResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
@@ -60,5 +64,21 @@ public class UserResource {
     public Response delete(@PathParam("id") int id) throws EntityNotFoundException, API_Exception {
         UserDTO deleted = FACADE.deleteUser(id);
         return Response.ok().entity(GSON.toJson(deleted)).build();
+    }
+    @POST
+    @Path("/favorite")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response favorite(String favoriteInfo) throws API_Exception {
+        Favorites favorites = GSON.fromJson(favoriteInfo,Favorites.class);
+        FavoritesDTO theFan = FACADE.addFavorite(favorites);
+        return Response.ok().entity(GSON.toJson(theFan)).build();
+    }
+
+    @GET
+    @Path("/{id}+favorite")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getAllFavorites(@PathParam("id")int id) throws API_Exception {
+        List<FavoritesDTO> favoritesList = FACADE.getAllFavoritesFromID(id);
+        return  Response.ok().entity(GSON.toJson(favoritesList)).build();
     }
 }
