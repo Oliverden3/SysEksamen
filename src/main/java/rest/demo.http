@@ -17,10 +17,10 @@ Content-Type: application/json
 {"userName": "chris", "userPass": "chris"}
 
 ### Updates a person by his id
-PUT http://localhost:8080/api/info/6
+PUT http://localhost:8080/BackEnd_CA2_war_exploded/api/user/1
 Content-Type: application/json
 
-{"userName": "christest", "userPass": "test"}
+{"userName": "UserChanged", "userPass": "test123"}
 
 ### Deletes a user by his id
 DELETE http://localhost:8080/api/info/user/34
@@ -30,7 +30,7 @@ Accept: application/json
 POST http://localhost:8080/BackEnd_CA2_war_exploded/api/user/favorite
 Content-Type: application/json
 
-{"userid": 1, "slug": "utahpetadoptions"}
+{"userid": 2, "slug": "utahpetadoptions"}
 
 
 
