@@ -8,6 +8,8 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import facades.UserFacade;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -63,7 +65,7 @@ public class LoginEndpoint {
         throw new AuthenticationException("Invalid username or password! Please try again");
     }
 
-    private String createToken(String userName, List<String> roles) throws JOSEException {
+    private static String createToken(String userName, List<String> roles) throws JOSEException {
 
         StringBuilder res = new StringBuilder();
         for (String string : roles) {
@@ -88,5 +90,6 @@ public class LoginEndpoint {
         return signedJWT.serialize();
 
     }
-
 }
+
+
