@@ -6,7 +6,7 @@ import java.util.List;
 
 public class NonProfitDTO {
     public List<CharityDTO> nonprofits;
-
+    public NonProfitDTO(){}
    public NonProfitDTO(List<String> nonprofits) {
         this.nonprofits = null;
         Gson gson = new Gson();
