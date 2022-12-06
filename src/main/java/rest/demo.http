@@ -11,10 +11,16 @@ GET http://localhost:8080/api/info/count
 Accept: application/json
 
 ### Creates a new person
-POST https://cphcn332.dk/tomcat/BackEnd_CA2/api/info
+POST http://localhost:8080/BackEnd_CA2_war_exploded/api/user/add
 Content-Type: application/json
 
-{"userName": "chris", "userPass": "chris"}
+{
+  "userName": "test",
+  "userPass": "test",
+  "roleList": [
+    {"roleName": "admin"}
+  ]
+}
 
 ### Updates a person by his id
 PUT http://localhost:8080/BackEnd_CA2_war_exploded/api/user/1
@@ -31,9 +37,20 @@ POST http://localhost:8080/BackEnd_CA2_war_exploded/api/user/favorite
 Content-Type: application/json
 
 {"userid": 2, "slug": "utahpetadoptions"}
+### Updated blacklist test
+POST http://localhost:8080/BackEnd_CA2_war_exploded/api/charity/ban+electionscience
+Content-Type: application/json
 
-
-
+{
+  "userName": "test",
+  "userPass": "test",
+  "roleList": [
+    {"roleName":"admin"}
+  ]
+}
+### Get
+GET http://localhost:8080/BackEnd_CA2_war_exploded/api/charity/electionscience
+Content-Type: application/json
 
 
 
