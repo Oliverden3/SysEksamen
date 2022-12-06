@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.CharityDTO;
 import dtos.NonProfitDTO;
+import dtos.UserDTO;
 import entities.Blacklist;
+import entities.Role;
 import facades.BlacklistFacade;
 import javassist.NotFoundException;
 import utils.EMF_Creator;
@@ -47,13 +49,26 @@ public class CharityResource {
   @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{category}+{slug}")
-    public String blacklistCharity(@PathParam("category") String category, @PathParam("slug") String slug) throws IOException, NotFoundException {
-        String nonprofit = HttpUtils.fetchData("https://partners.every.org/v0.2/search/" + category + "?apiKey=2b719ff3063ef1714c32edbfdd7af870&take=5");
-        NonProfitDTO nonProfitDTO = GSON.fromJson(nonprofit, NonProfitDTO.class);
-        Blacklist blacklist = new Blacklist(slug);
-        FACADE.blacklistCharity(blacklist);
-        NonProfitDTO sendThis = FACADE.removeBlacklistedItems(nonProfitDTO);
-      return GSON.toJson(sendThis);
+    public String blacklistCharity(@PathParam("category") String category, @PathParam("slug") String slug, String user) throws IOException, NotFoundException {
+      UserDTO userJson = GSON.fromJson(user, UserDTO.class);
+      Boolean accepted = false;
+        for (Role role : userJson.toUser().getRoleList() ) {
+          if(role.equals("admin")){
+              accepted = true;
+              break;
+          }
+      }
+        if (accepted == true) {
+            String nonprofit = HttpUtils.fetchData("https://partners.every.org/v0.2/search/" + category + "?apiKey=2b719ff3063ef1714c32edbfdd7af870&take=50");
+            NonProfitDTO nonProfitDTO = GSON.fromJson(nonprofit, NonProfitDTO.class);
+            Blacklist blacklist = new Blacklist(slug);
+            FACADE.blacklistCharity(blacklist);
+            NonProfitDTO sendThis = FACADE.removeBlacklistedItems(nonProfitDTO);
+            return GSON.toJson(sendThis);
+        }
+        else{
+            return null;
+        }
     }
 
 }

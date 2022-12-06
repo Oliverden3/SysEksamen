@@ -2,7 +2,9 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.CharityDTO;
 import dtos.FavoritesDTO;
+import dtos.NonProfitDTO;
 import dtos.UserDTO;
 import entities.Favorites;
 import entities.Role;
@@ -11,11 +13,14 @@ import errorhandling.API_Exception;
 import facades.UserFacade;
 import javassist.NotFoundException;
 import utils.EMF_Creator;
+import utils.HttpUtils;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.List;
 
 @Path("user")
@@ -77,8 +82,14 @@ public class UserResource {
     @GET
     @Path("/{id}+favorite")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getAllFavorites(@PathParam("id")int id) throws API_Exception {
+    public Response getAllFavorites(@PathParam("id")int id) throws API_Exception, IOException {
         List<FavoritesDTO> favoritesList = FACADE.getAllFavoritesFromID(id);
-        return  Response.ok().entity(GSON.toJson(favoritesList)).build();
+        NonProfitDTO nonProfitDTO = new NonProfitDTO();
+        for (FavoritesDTO f: favoritesList ){
+           String favorite = HttpUtils.fetchData("https://partners.every.org/v0.2/nonprofit/%"+f.getSlug()+"?apiKey=2b719ff3063ef1714c32edbfdd7af870");
+            CharityDTO charityDTO =  GSON.fromJson(favorite, CharityDTO.class);
+            nonProfitDTO.getNonprofits().add(charityDTO);
+        }
+        return  Response.ok().entity(GSON.toJson(nonProfitDTO)).build();
     }
 }
