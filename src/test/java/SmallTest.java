@@ -1,37 +1,44 @@
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dtos.CharityDTO;
+import dtos.DataDTO;
+import dtos.FavoritesDTO;
 import dtos.NonProfitDTO;
+import entities.AllCategories;
+import entities.Favorites;
+import facades.UserFacade;
+import utils.EMF_Creator;
 import utils.HttpUtils;
 
+import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SmallTest {
     public static void main(String[] args) throws IOException {
-        boolean set = false;
-        Gson gson = new Gson();
-        String placeholder = "science";
-        // this is our api key: 2b719ff3063ef1714c32edbfdd7af870, we're going to use it at every fetch with this API, if it doesn't work, generate a new one here: https://www.every.org/developer
-        String nonprofit = HttpUtils.fetchData("https://partners.every.org/v0.2/search/"+placeholder+"?apiKey=2b719ff3063ef1714c32edbfdd7af870&take=5");
-        NonProfitDTO nonProfitDTO = gson.fromJson(nonprofit,NonProfitDTO.class);
-        String bl1 = "electionscience";
-        String bl2 = "spacescience";
-        List<CharityDTO> danger = new ArrayList<>();
-        for (CharityDTO c: nonProfitDTO.getNonprofits()) {
-            System.out.println(c.getSlug());
-            if (c.getSlug().equals(bl1)|| c.getSlug().equals(bl2)){
-                danger.add(c);
+        final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
+        final UserFacade FACADE = UserFacade.getUserFacade(EMF);
+        final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+        int id = 1;
+        List<FavoritesDTO> favoritesList = FACADE.getAllFavoritesFromID(id);
+        List<CharityDTO> getThese = new ArrayList<>();
+        AllCategories allCategories = new AllCategories();
+        for (FavoritesDTO f : favoritesList
+        ) {
+            for (String s: allCategories.getList()) {
+                String nonprofit = HttpUtils.fetchData("https://partners.every.org/v0.2/search/" + s + "?apiKey=2b719ff3063ef1714c32edbfdd7af870&take=50");
+                NonProfitDTO nonProfitDTO = GSON.fromJson(nonprofit, NonProfitDTO.class);
+                for (CharityDTO c:nonProfitDTO.getNonprofits()) {
+                    if (c.getSlug().equals(f.getSlug())){
+                        getThese.add(c);
+                    }
+                }
             }
         }
-        System.out.println(danger.size());
-        for (int i = 0; i < danger.size(); i++) {
-            int finalI = i;
-            nonProfitDTO.getNonprofits().removeIf(c ->(c.equals(danger.get(finalI))));
-        }
-        for (CharityDTO c: nonProfitDTO.getNonprofits()) {
-            System.out.println(c.getSlug());
-        }
+        String nonprofit = HttpUtils.fetchData("https://partners.every.org/v0.2/search/pets?apiKey=2b719ff3063ef1714c32edbfdd7af870&take=50");
+        NonProfitDTO nonProfitDTO =GSON.fromJson(nonprofit, NonProfitDTO.class);
+        nonProfitDTO.setNonprofits(getThese);
+        System.out.println(nonProfitDTO.getNonprofits().size());
     }
-
 }

@@ -40,7 +40,7 @@ public class CharityResource {
         return GSON.toJson(sendThis);
     }
 
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{category}+{slug}")
     public String blacklistCharityFromCategory(@PathParam("category") String category, @PathParam("slug") String slug) throws IOException, NotFoundException {
@@ -51,7 +51,7 @@ public class CharityResource {
         NonProfitDTO sendThis = FACADE.removeBlacklistedItems(nonProfitDTO);
         return GSON.toJson(sendThis);
     }
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("ban+{slug}")
     public String blacklistCharity(@PathParam("slug") String slug) throws IOException, NotFoundException {

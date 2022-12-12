@@ -6,7 +6,6 @@ import java.util.List;
 
 public class NonProfitDTO {
     public List<CharityDTO> nonprofits;
-    public NonProfitDTO(){}
    public NonProfitDTO(List<String> nonprofits) {
         this.nonprofits = null;
         Gson gson = new Gson();
@@ -15,7 +14,6 @@ public class NonProfitDTO {
             this.nonprofits.add(charityDTO);
         }
     }
-
     public List<CharityDTO> getNonprofits() {
         return nonprofits;
     }
@@ -25,6 +23,10 @@ public class NonProfitDTO {
             System.out.println("NAME: " + c.getName());
             System.out.println(c.getDescription());
         }
+    }
+
+    public void setNonprofits(List<CharityDTO> nonprofits) {
+        this.nonprofits = nonprofits;
     }
 
     @Override

@@ -35,7 +35,7 @@ public class BlacklistFacade {
         try {
             TypedQuery<Blacklist> query = em.createQuery("SELECT b FROM Blacklist b", Blacklist.class);
             if (query == null) {
-                throw new NotFoundException("Can't find any users");
+                throw new NotFoundException("Can't find any blacklist");
             }
             List<Blacklist> blacklists = query.getResultList();
             List<String> bannedSlugs = new ArrayList<>();
