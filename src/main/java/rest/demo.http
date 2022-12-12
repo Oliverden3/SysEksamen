@@ -1,5 +1,5 @@
 ### Finds all users in the system
-GET http://localhost:8080/api/info/all
+GET http://localhost:8080/api/user/all
 Accept: application/json
 
 ### Finds a user by his id
