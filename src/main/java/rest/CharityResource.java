@@ -4,9 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.CharityDTO;
 import dtos.NonProfitDTO;
-import dtos.UserDTO;
 import entities.Blacklist;
-import entities.Role;
+import dtos.DataDTO;
 import facades.BlacklistFacade;
 import javassist.NotFoundException;
 import utils.EMF_Creator;
@@ -16,8 +15,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Path("charity")
@@ -43,7 +40,7 @@ public class CharityResource {
         return GSON.toJson(sendThis);
     }
 
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{category}+{slug}")
     public String blacklistCharityFromCategory(@PathParam("category") String category, @PathParam("slug") String slug) throws IOException, NotFoundException {
@@ -54,7 +51,7 @@ public class CharityResource {
         NonProfitDTO sendThis = FACADE.removeBlacklistedItems(nonProfitDTO);
         return GSON.toJson(sendThis);
     }
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("ban+{slug}")
     public String blacklistCharity(@PathParam("slug") String slug) throws IOException, NotFoundException {
@@ -63,5 +60,15 @@ public class CharityResource {
         Blacklist blacklist = new Blacklist(slug);
         FACADE.blacklistCharity(blacklist);
         return GSON.toJson(charityDTO);
+    }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("get+{slug}")
+    public String getSpecificSlug(@PathParam("slug") String slug) throws IOException, NotFoundException {
+        String data = HttpUtils.fetchData("https://partners.every.org/v0.2/nonprofit/"+slug+"?apiKey=2b719ff3063ef1714c32edbfdd7af870");
+        DataDTO theDataDTO = GSON.fromJson(data, DataDTO.class);
+        String sendthis = GSON.toJson(theDataDTO);
+        sendthis = sendthis+data;
+        return sendthis;
     }
 }

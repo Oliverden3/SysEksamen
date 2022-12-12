@@ -6,6 +6,7 @@ import dtos.CharityDTO;
 import dtos.FavoritesDTO;
 import dtos.NonProfitDTO;
 import dtos.UserDTO;
+import entities.AllCategories;
 import entities.Favorites;
 import entities.Role;
 import entities.User;
@@ -21,6 +22,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("user")
@@ -79,17 +81,28 @@ public class UserResource {
         return Response.ok().entity(GSON.toJson(theFan)).build();
     }
 
-    @GET
+   @GET
     @Path("/{id}+favorite")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllFavorites(@PathParam("id")int id) throws API_Exception, IOException {
         List<FavoritesDTO> favoritesList = FACADE.getAllFavoritesFromID(id);
-        NonProfitDTO nonProfitDTO = new NonProfitDTO();
-        for (FavoritesDTO f: favoritesList ){
-           String favorite = HttpUtils.fetchData("https://partners.every.org/v0.2/nonprofit/%"+f.getSlug()+"?apiKey=2b719ff3063ef1714c32edbfdd7af870");
-            CharityDTO charityDTO =  GSON.fromJson(favorite, CharityDTO.class);
-            nonProfitDTO.getNonprofits().add(charityDTO);
-        }
+        List<CharityDTO> getThese = new ArrayList<>();
+       AllCategories allCategories = new AllCategories();
+       for (FavoritesDTO f : favoritesList
+       ) {
+           for (String s: allCategories.getList()) {
+               String nonprofit = HttpUtils.fetchData("https://partners.every.org/v0.2/search/" + s + "?apiKey=2b719ff3063ef1714c32edbfdd7af870&take=50");
+               NonProfitDTO nonProfitDTO = GSON.fromJson(nonprofit, NonProfitDTO.class);
+               for (CharityDTO c:nonProfitDTO.getNonprofits()) {
+                   if (c.getSlug().equals(f.getSlug())){
+                       getThese.add(c);
+                   }
+               }
+           }
+       }
+       String nonprofit = HttpUtils.fetchData("https://partners.every.org/v0.2/search/pets?apiKey=2b719ff3063ef1714c32edbfdd7af870&take=50");
+       NonProfitDTO nonProfitDTO =GSON.fromJson(nonprofit, NonProfitDTO.class);
+       nonProfitDTO.setNonprofits(getThese);
         return  Response.ok().entity(GSON.toJson(nonProfitDTO)).build();
     }
 }
