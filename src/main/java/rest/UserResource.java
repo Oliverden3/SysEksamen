@@ -88,14 +88,17 @@ public class UserResource {
         List<FavoritesDTO> favoritesList = FACADE.getAllFavoritesFromID(id);
         List<CharityDTO> getThese = new ArrayList<>();
        AllCategories allCategories = new AllCategories();
-       for (FavoritesDTO f : favoritesList
-       ) {
+       for (FavoritesDTO f : favoritesList) {
+           boolean accepted = false;
            for (String s: allCategories.getList()) {
+               if(accepted == true){break;}
                String nonprofit = HttpUtils.fetchData("https://partners.every.org/v0.2/search/" + s + "?apiKey=2b719ff3063ef1714c32edbfdd7af870&take=50");
                NonProfitDTO nonProfitDTO = GSON.fromJson(nonprofit, NonProfitDTO.class);
                for (CharityDTO c:nonProfitDTO.getNonprofits()) {
+                   if(accepted == true){break;}
                    if (c.getSlug().equals(f.getSlug())){
                        getThese.add(c);
+                       accepted = true;
                    }
                }
            }
