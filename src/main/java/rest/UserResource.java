@@ -44,16 +44,16 @@ public class UserResource {
         return Response.ok().entity(GSON.toJson(FACADE.getUserById(id))).build();
     }
 
-    @POST
-    @Path("/add")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(String user) {
-        User userTwo =GSON.fromJson(user, User.class);
-        User burner = new User(userTwo.getUserName(), userTwo.getUserPass(),userTwo.getRoleList());
-        User newUser = FACADE.createUser(burner);
-        return Response.ok().entity(GSON.toJson(newUser)).build();
-
-    }
+//    @POST
+//    @Path("/add")
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    public Response create(String user) {
+//        User userTwo =GSON.fromJson(user, User.class);
+//        User burner = new User(userTwo.getUserName(), userTwo.getUserPass(),userTwo.getRoleList());
+//        User newUser = FACADE.createUser(burner);
+//        return Response.ok().entity(GSON.toJson(newUser)).build();
+//
+//    }
     @PUT
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -72,13 +72,23 @@ public class UserResource {
         UserDTO deleted = FACADE.deleteUser(id);
         return Response.ok().entity(GSON.toJson(deleted)).build();
     }
+//    @POST
+//    @Path("/favorite")
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    public Response favorite(String favoriteInfo) throws API_Exception {
+//        Favorites favorites = GSON.fromJson(favoriteInfo,Favorites.class);
+//        FavoritesDTO theFan = FACADE.addFavorite(favorites);
+//        return Response.ok().entity(GSON.toJson(theFan)).build();
+//    }
+
     @POST
     @Path("/favorite")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response favorite(String favoriteInfo) throws API_Exception {
-        Favorites favorites = GSON.fromJson(favoriteInfo,Favorites.class);
-        FavoritesDTO theFan = FACADE.addFavorite(favorites);
-        return Response.ok().entity(GSON.toJson(theFan)).build();
+    public Response create(String favorite) {
+        Favorites userTwo = GSON.fromJson(favorite, Favorites.class);
+        Favorites burner = new Favorites(userTwo.getId(), userTwo.getSlug());
+        Favorites newUser = FACADE.createFavorite(burner);
+        return Response.ok().entity(GSON.toJson(newUser)).build();
     }
 
    @GET

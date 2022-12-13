@@ -163,6 +163,20 @@ public class UserFacade {
         FavoritesDTO theFan = new FavoritesDTO(favorites);
         return theFan;
     }
+
+    public Favorites createFavorite(Favorites favorites) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(favorites);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return favorites;
+    }
+
+
     public List<FavoritesDTO> getAllFavoritesFromID(int id){
         EntityManager em = getEntityManager();
         try {
