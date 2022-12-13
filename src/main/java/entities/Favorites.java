@@ -27,6 +27,7 @@ public class Favorites {
         this.slug = slug;
     }
 
+
     public int getId() {
         return id;
     }
