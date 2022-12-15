@@ -101,14 +101,14 @@ public class UserResourceTest {
     @Test
     public void testServerIsUp() {
         System.out.println("Testing is server UP");
-        given().when().get("/info").then().statusCode(200);
+        given().when().get("/user/all").then().statusCode(200);
     }
 
     @Test
     public void testLogRequest() {
         System.out.println("Testing logging request details");
         given().log().all()
-                .when().get("/info")
+                .when().get("/user/all")
                 .then().statusCode(200);
     }
 
@@ -116,7 +116,7 @@ public class UserResourceTest {
     public void testLogResponse() {
         System.out.println("Testing logging response details");
         given()
-                .when().get("/info")
+                .when().get("/user/all")
                 .then().log().body().statusCode(200);
     }
 
@@ -124,7 +124,7 @@ public class UserResourceTest {
     public void testGetById()  {
         given()
                 .contentType(ContentType.JSON)
-                .get("/info/user/{id}",u1.getId())
+                .get("/user/{id}",u1.getId())
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
@@ -149,7 +149,7 @@ public class UserResourceTest {
 
     @Test
     public void testPrintResponse(){
-        Response response = given().when().get("/info/user/"+u1.getId());
+        Response response = given().when().get("/user/"+u1.getId());
         ResponseBody body = response.getBody();
         System.out.println(body.prettyPrint());
 
@@ -161,7 +161,7 @@ public class UserResourceTest {
 
     @Test
     public void exampleJsonPathTest() {
-        Response res = given().get("/info/user/"+u1.getId());
+        Response res = given().get("user/"+u1.getId());
         assertEquals(200, res.getStatusCode());
         String json = res.asString();
         JsonPath jsonPath = new JsonPath(json);
@@ -173,7 +173,7 @@ public class UserResourceTest {
         given()
                 .contentType("application/json")
                 .pathParam("id", u2.getId())
-                .delete("/info/user/{id}")
+                .delete("user/{id}")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(u2.getId()));

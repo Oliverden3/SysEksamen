@@ -11,7 +11,7 @@ GET http://localhost:8080/api/info/count
 Accept: application/json
 
 ### Creates a new person
-POST http://localhost:8080/BackEnd_CA2_war_exploded/api/user/add
+POST http://localhost:8080/api/user/add
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ DELETE http://localhost:8080/api/info/user/34
 Accept: application/json
 
 ### Create a favorite with users id
-POST http://localhost:8080/BackEnd_CA2_war_exploded/api/user/favorite
+POST http://localhost:8080/api/user/favorite
 Content-Type: application/json
 
 {"userid": 2, "slug": "utahpetadoptions"}
