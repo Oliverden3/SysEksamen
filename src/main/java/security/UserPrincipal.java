@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UserPrincipal implements Principal {
-
+//hej
 
   private String username;
   private List<String> roles = new ArrayList<>();
