@@ -63,6 +63,7 @@ public class UserResource {
         User user = userJson.toUser();
         UserDTO updated = FACADE.updateUser(id,user);
         return Response.ok().entity(GSON.toJson(updated)).build();
+
     }
     @DELETE
     @Path("/{id}")

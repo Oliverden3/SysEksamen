@@ -114,8 +114,6 @@ public class UserFacade {
             throw new API_Exception("There's no user with that id", 404);
         em.close();
         return new UserDTO(user);
-
-
     }
 
     public UserDTO deleteUser(int id) throws API_Exception {
